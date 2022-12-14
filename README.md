@@ -13,7 +13,7 @@
 | Name   |      Description      |  Default | Required |
 |----------|-------------|------|:---:|
 | DOMAIN | Domain for the certificate | null | Y |
-| EMAIL | Email for the certificate | null | Y |
+| MAIL | Email for the certificate | null | Y |
 | APISIX_URL |  eg. http://ip:port | null | Y |
 | APISIX_KEY |  APISIX admin api key | null | Y |
 | AGREE_TOS | Agree to Certbot TOS | false | Y |

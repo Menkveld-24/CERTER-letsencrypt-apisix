@@ -2,7 +2,7 @@
 
 # [CERTER]
 # APISIX Letsencrypt certificate generator script
-# Menke 2022
+# Menke 2023
 
 # Exit on any command fail
 set -e
@@ -26,7 +26,7 @@ debugCurl=$([ $CURL_DEBUG == "true" ] && echo "-v" || echo "")
 agreeCertbotTOS=$([ $AGREE_TOS == "true" ] && echo "--agree-tos" || echo "")
 forceRenew=$([ $FORCE_RENEW == "true" ] && echo "--force-renew" || echo "")
 
-echo "[CERTER] v1.1.0"
+echo "[CERTER] v2.0.0"
 echo "[CERTER] Generating certificates for: $domain"
 
 # Validate the response of any curl
@@ -70,16 +70,24 @@ echo "[CERTER] Generated certificates!"
 
 # Cleaning up and deleting old certificates
 if [[ $deleteOtherCerts == "true" ]]; then
-    validateHTTPResonse=`curl -H "X-API-KEY: $apikey" -s $ignoreSSL $debugCurl -o /tmp/response -w "%{http_code}" -X GET "$url/apisix/admin/ssl"`
+    validateHTTPResonse=`curl -H "X-API-KEY: $apikey" -s $ignoreSSL $debugCurl -o /tmp/response -w "%{http_code}" -X GET "$url/apisix/admin/ssls"`
 
-    deletedCerts=0
-    for id in $(cat /tmp/response | jq -r ".node.nodes[]|select(.value.snis[0] == \"$domain\")|.value.id"); do
-        validateHTTPResponse `curl -H "X-API-KEY: $apikey" -s $ignoreSSL $debugCurl $showOutput -w "%{http_code}" -X DELETE "$url/apisix/admin/ssl/$id"`
-        deletedCerts=$(expr $deletedCerts + 1)
-    done
+    # Check if there are any certificates in the response
+    if [[ $(cat /tmp/response | jq '.total') -ne 0 ]]; then
 
-    if [[ $deletedCerts -gt 0 ]]; then
-        echo "[CERTER] Deleted $deletedCerts existing certificate(s)!"
+        deletedCerts=0
+        for id in $(cat /tmp/response | jq -r ".list[]|select(.value.snis[0] == \"$domain\")|.value.id"); do
+            validateHTTPResponse `curl -H "X-API-KEY: $apikey" -s $ignoreSSL $debugCurl $showOutput -w "%{http_code}" -X DELETE "$url/apisix/admin/ssls/$id"`
+            deletedCerts=$(expr $deletedCerts + 1)
+        done
+
+        if [[ $deletedCerts -gt 0 ]]; then
+            echo "[CERTER] Deleted $deletedCerts existing certificate(s)!"
+        else
+            echo "[CERTER] No certificates to clean up"
+        fi
+
+    # No certificates are currently installed
     else
         echo "[CERTER] No certificates to clean up"
     fi
@@ -91,6 +99,6 @@ validateHTTPResponse `curl -H "X-API-KEY: $apikey" -s $ignoreSSL $debugCurl $sho
     \"key\": \"$(cat /etc/letsencrypt/live/$domain/privkey.pem)\",
     \"snis\": [\"$domain\"],
     \"validity_end\": $(expr $(date +%s) + 90 \* 24 \* 60 \* 60)
-}" "$url/apisix/admin/ssl"`
+}" "$url/apisix/admin/ssls"`
 
 echo "[CERTER] Uploaded certificates!"

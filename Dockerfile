@@ -1,6 +1,6 @@
 # [CERTER]
 # APISIX Letsencrypt certificate generator Dockerfile
-# Menke 2022
+# Menke 2023
 FROM alpine:3.17
 
 # Default env variables

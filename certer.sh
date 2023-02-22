@@ -24,8 +24,9 @@ ignoreSSL=$([ $CURL_IGNORESSL == "true" ] && echo "-k" || echo "")
 showOutput=$([ $CURL_QUIET == "true" ] && echo "-o /dev/null" || echo "-o /tmp/debug_body")
 debugCurl=$([ $CURL_DEBUG == "true" ] && echo "-v" || echo "")
 agreeCertbotTOS=$([ $AGREE_TOS == "true" ] && echo "--agree-tos" || echo "")
+forceRenew=$([ $FORCE_RENEW == "true" ] && echo "--force-renew" || echo "")
 
-echo "[CERTER} v1.0.0"
+echo "[CERTER] v1.1.0"
 echo "[CERTER] Generating certificates for: $domain"
 
 # Validate the response of any curl
@@ -59,10 +60,10 @@ echo "[CERTER] Created temporary acme challenge route!"
 echo "[CERTER] Certbot output vvvvvvvvvvvvvvvvvvvvvv"
 if [[ $stagingOrProd == "production" ]]; then 
     echo "[CERTER] Generating production certificates...."
-    certbot certonly --standalone --domains $domain --email $mail $agreeCertbotTOS --non-interactive
+    certbot certonly --standalone --domains $domain --email $mail $agreeCertbotTOS --non-interactive $forceRenew
 else
     echo "[CERTER] Generating staging certificates...."
-    certbot certonly --standalone --staging --domains $domain --email $mail $agreeCertbotTOS --non-interactive
+    certbot certonly --standalone --staging --domains $domain --email $mail $agreeCertbotTOS --non-interactive $forceRenew
 fi 
 echo "[CERTER] Certbot output ^^^^^^^^^^^^^^^^^^^^^^"
 echo "[CERTER] Generated certificates!"

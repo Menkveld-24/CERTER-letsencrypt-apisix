@@ -25,6 +25,9 @@
 | CURL_DEBUG | Adds the -v flag to curl requests | false | N |
 | CURL_QUIET | Displays curl output in terminal (including certificates) | false | N |
 | CURL_IGNORESSL | Ignore ssl errors when making requests to APISIX | true | N |
+| FORCE_RENEW | Force certbot to renew the certificate if it doesn't want to | false | N |
+
+##### Tip: mount /etc/letsencrypt to a volume or sth to prevent certbot from making a new account each run
 
 ### Versions
 Version overview, this is not fully tested on all versions

@@ -44,7 +44,6 @@ validateHTTPResponse() {
 validateHTTPResponse `curl -H "X-API-KEY: $apikey" -s $ignoreSSL $debugCurl $showOutput -w "%{http_code}" -X POST -d "{
     \"uri\": \"/.well-known/acme-challenge/*\",
     \"name\": \"$domain certbot\",
-    \"description\": \"Certbot signing route...\",
     \"host\": \"$domain\",
     \"priority\": 100,
     \"upstream\": {
@@ -97,8 +96,7 @@ fi
 validateHTTPResponse `curl -H "X-API-KEY: $apikey" -s $ignoreSSL $debugCurl $showOutput -w "%{http_code}" -X POST -d "{
     \"cert\": \"$(cat /etc/letsencrypt/live/$domain/fullchain.pem)\",
     \"key\": \"$(cat /etc/letsencrypt/live/$domain/privkey.pem)\",
-    \"snis\": [\"$domain\"],
-    \"validity_end\": $(expr $(date +%s) + 90 \* 24 \* 60 \* 60)
+    \"snis\": [\"$domain\"]
 }" "$url/apisix/admin/ssls"`
 
 echo "[CERTER] Uploaded certificates!"

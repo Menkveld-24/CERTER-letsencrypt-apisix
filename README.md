@@ -35,6 +35,7 @@ Version overview, this is not fully tested on all versions
 |---------|-------------|
 |1.x.x    | 2.15 |
 |2.x.x    | 3.1 |
+|3.x.x    | 3.7 |
 
 ### Open source
 Feel free to check out the [GitHub](https://github.com/Menkveld-24/CERTER-letsencrypt-apisix) repository and contribute!

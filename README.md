@@ -3,6 +3,9 @@
 ## Letsencrypt APISIX certificate generator
 [CERTER] is a Docker image that generates a Letsencrypt certificate and uploads it to [APISIX](https://apisix.apache.org/). Run this container every within every 90 days (Letsencrypt certificate expiration) to generate certificates for APISIX hassle-free!
 
+### Usage
+Set the environment variables and the script is located at /certer.sh
+
 ### Lifecycle
 1. A temporary route is created for certbot in APISIX. (prio 100)
 2. Certbot created a letsencrypt certificate

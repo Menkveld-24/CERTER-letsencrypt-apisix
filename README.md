@@ -1,4 +1,4 @@
-
+# Oct 2025: No longer maintained, due to stability issues with ETCD, I got rid of my kubesphere/kubernetes cluster and hence apisix
 # [CERTER]
 ## Letsencrypt APISIX certificate generator
 [CERTER] is a Docker image that generates a Letsencrypt certificate and uploads it to [APISIX](https://apisix.apache.org/). Run this container every within every 90 days (Letsencrypt certificate expiration) to generate certificates for APISIX hassle-free!
